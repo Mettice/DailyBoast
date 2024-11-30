@@ -1,14 +1,14 @@
 import React from 'react';
-import { RefreshCw, Heart, Share2 } from 'lucide-react';
+import { RefreshCw, Heart } from 'lucide-react';
 import { Compliment } from '../../types';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShareMenu } from '../sharing/ShareMenu';
 import { ShareToast } from '../sharing/ShareToast';
+import { useProgress } from '../../hooks/useProgress';
 
 interface ComplimentCardProps {
   compliment: Compliment;
   onRefresh: () => void;
-  onShare: () => void;
   onSave: () => void;
 }
 
@@ -22,13 +22,19 @@ const animationConfig = {
 export const ComplimentCard: React.FC<ComplimentCardProps> = ({
   compliment,
   onRefresh,
-  onShare,
   onSave,
 }) => {
+  const { updateProgress } = useProgress();
   const [shareToast, setShareToast] = React.useState<{
     message: string;
     type: 'success' | 'error';
   } | null>(null);
+
+  const handleSaveCompliment = () => {
+    onSave();
+    updateProgress('save', compliment, 'compliment');
+    console.log('Saving compliment:', compliment);
+  };
 
   return (
     <motion.div 
@@ -52,7 +58,7 @@ export const ComplimentCard: React.FC<ComplimentCardProps> = ({
               <RefreshCw className="w-4 h-4" />
             </button>
             <button
-              onClick={onSave}
+              onClick={handleSaveCompliment}
               className="p-2 hover:bg-rose-50 rounded-full text-rose-600"
             >
               <Heart className="w-4 h-4" />

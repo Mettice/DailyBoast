@@ -4,6 +4,7 @@ import { useComplimentStore } from "../store/useComplimentStore";
 import { useAnalytics } from "../components/analytics/AnalyticsProvider";
 import type { MoodType } from '../types';
 import { motion } from 'framer-motion';
+import { useProgress } from '../hooks/useProgress';
 
 const moods = [
   { id: 'energetic' as MoodType, icon: Sun, label: 'Energetic' },
@@ -26,10 +27,18 @@ const moods = [
 export const MoodSelector: React.FC = () => {
   const { selectedMood, setMood, handleGetCompliment, selectedCategory } = useComplimentStore();
   const { trackMoodSelected } = useAnalytics();
+  const { updateProgress } = useProgress();
 
   const handleMoodSelect = async (mood: MoodType) => {
+    console.log('Mood selected:', mood);
     setMood(mood);
     trackMoodSelected(mood);
+    try {
+      updateProgress('mood', mood, 'mood');
+      console.log('Mood progress updated');
+    } catch (error) {
+      console.error('Error updating mood progress:', error);
+    }
     if (selectedCategory) {
       await handleGetCompliment();
     }

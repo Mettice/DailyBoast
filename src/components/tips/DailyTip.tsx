@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { RefreshCw, Heart } from 'lucide-react';
 import { useTipsStore } from '../../store/useTipsStore';
 import { useComplimentStore } from '../../store/useComplimentStore';
-import type { TipCategory } from '../../types/tips';
+import type { Tip, TipCategory } from '../../types/tips';
 import { Tooltip } from '../ui/Tooltip';
 import { ShareMenu } from '../sharing/ShareMenu';
 import { ShareImage } from '../sharing/ShareImage';
@@ -65,6 +65,11 @@ export const DailyTip: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleSaveTip = (tip: Tip) => {
+    saveTip(tip);
+    updateProgress('save', tip, 'tip');
   };
 
   return (
@@ -129,18 +134,16 @@ export const DailyTip: React.FC = () => {
               <p className="text-xs text-blue-600">{stats.totalTipsSaved} saved</p>
             </motion.div>
 
-            {/* Categories */}
+            {/* Moods */}
             <motion.div 
-              className="bg-green-50 p-3 rounded-lg"
+              className="bg-purple-50 p-3 rounded-lg"
               whileHover={{ scale: 1.02 }}
             >
-              <p className="font-medium">🎯 Categories</p>
-              <p className="text-lg">{stats.categoriesExplored.length} explored</p>
-              {stats.favoriteCategory && (
-                <p className="text-xs text-green-600">
-                  Favorite: {stats.favoriteCategory.name}
-                </p>
-              )}
+              <p className="font-medium">🎭 Moods</p>
+              <p className="text-lg">{stats.moodTracking.totalMoodsLogged} logged</p>
+              <p className="text-xs text-purple-600">
+                Most frequent: {stats.moodTracking.mostFrequentMood || 'None'}
+              </p>
             </motion.div>
 
             {/* Sharing */}
@@ -176,7 +179,7 @@ export const DailyTip: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={() => currentTip && saveTip(currentTip)}
+              onClick={() => currentTip && handleSaveTip(currentTip)}
               className="p-2 sm:p-3 rounded-full bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors"
             >
               <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
