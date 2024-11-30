@@ -1,4 +1,5 @@
-import { seasonalThemes } from "@/data/complimentsDatabase";
+import { seasonalThemes } from '../data/complimentsDatabase';
+import { useState } from 'react';
 
 export interface Theme {
     id: string;
@@ -69,6 +70,16 @@ export interface Theme {
       }
     },
     // Add more themes...
+  };
+  
+  export const useTheme = () => {
+    const [currentTheme, setCurrentTheme] = useState<Theme>(themes.light);
+
+    const toggleTheme = () => {
+      setCurrentTheme(prev => prev.id === 'light' ? themes.dark : themes.light);
+    };
+
+    return { currentTheme, toggleTheme };
   };
   
   export const getSeasonalTheme = (season: string): Partial<Theme> => {

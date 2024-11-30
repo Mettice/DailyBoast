@@ -1,11 +1,12 @@
 import React, { useRef } from 'react';
 import { motion } from 'framer-motion';
 import html2canvas from 'html2canvas';
-import { Share2, Download, Instagram, Twitter } from 'lucide-react';
+import { Download, Instagram, Twitter } from 'lucide-react';
 import type { Compliment, Theme } from '../../types';
+import type { Tip } from '../../types/tips';
 
 interface ShareImageProps {
-  compliment: Compliment;
+  compliment: Compliment | Tip;
   theme: Theme;
 }
 

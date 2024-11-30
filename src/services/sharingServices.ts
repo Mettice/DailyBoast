@@ -1,8 +1,9 @@
-import { Compliment } from '../types';
+import type { Compliment } from '../types';
+import type { Tip } from '../types/tips';
 
 interface ShareOptions {
   platform: 'twitter' | 'facebook' | 'linkedin' | 'whatsapp' | 'telegram' | 'email' | 'copy' | 'download';
-  compliment: Compliment;
+  compliment: Compliment | Tip;
   imageUrl?: string;
 }
 
@@ -13,12 +14,13 @@ export class SharingService {
     const encodedImage = imageUrl ? encodeURIComponent(imageUrl) : '';
 
     return {
-      twitter: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}`,
-      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}`,
-      linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=Daily%20Joy&summary=${encodedText}`,
-      whatsapp: `https://wa.me/?text=${encodedText}%20${encodedUrl}`,
-      telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}`,
-      email: `mailto:?subject=A%20Compliment%20for%20You&body=${encodedText}%0A%0A${encodedUrl}`,
+      twitter: `https://twitter.com/intent/tweet?text=${encodedText}&url=${encodedUrl}&image=${encodedImage}`,
+      facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}&quote=${encodedText}&picture=${encodedImage}`,
+      linkedin: `https://www.linkedin.com/shareArticle?mini=true&url=${encodedUrl}&title=Daily%20Joy&summary=${encodedText}&image=${encodedImage}`,
+      whatsapp: `https://wa.me/?text=${encodedText}%20${encodedUrl}%20${encodedImage}`,
+      telegram: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}&image=${encodedImage}`,
+      email: `mailto:?subject=A%20Message%20for%20You&body=${encodedText}%0A%0A${encodedUrl}%0A${encodedImage}`,
+      copy: '',
       download: ''
     };
   }

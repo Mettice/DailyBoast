@@ -8,7 +8,7 @@ import { MoodSelector } from './components/MoodSelector';
 import { LoadingState } from './components/LoadingState';
 import { ErrorState } from './components/ErrorState';
 import { useComplimentStore } from './store/useComplimentStore';
-import type { ComplimentCategory } from './types';
+import type { ComplimentCategory } from './types/index';
 
 //import { CategoryFilter } from './store/useComplimentStore';
 //import { Achievement } from './data/compliments';
@@ -26,7 +26,7 @@ import { CallbackPage } from './pages/CallbackPage';
 import './App.css';
 import './index.css';
 import { Layout } from './components/Layout/Layout';
-import { StatsDisplay } from './components/profile/StatsDisplay';
+import { SavedTips } from './components/tips/SavedTips';
 
 const App: React.FC = React.memo(() => {
   console.log('App component rendering');
@@ -75,6 +75,7 @@ const App: React.FC = React.memo(() => {
                       onSelect={handleCategorySelect} 
                     />
                     <MoodSelector />
+                
                     <div className="mt-8">
                       <AnimatePresence mode="wait">
                         {isLoading ? (
@@ -92,15 +93,12 @@ const App: React.FC = React.memo(() => {
                             onShare={() => handleShare(currentCompliment)}
                             onSave={() => handleSave(currentCompliment)}
                           />
-                        ) : (
-                          <div className="text-center p-8 bg-white rounded-3xl shadow-sm">
-                            <p className="text-gray-600">Click a category to get started</p>
-                          </div>
-                        )}
+                        ) : null}
                       </AnimatePresence>
                     </div>
                     
                     <DailyTip />
+                    <SavedTips />
 
                     <div className="space-y-6">
                       <StreakDisplay />

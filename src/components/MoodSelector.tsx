@@ -31,7 +31,6 @@ export const MoodSelector: React.FC = () => {
     setMood(mood);
     trackMoodSelected(mood);
     if (selectedCategory) {
-      console.log('Generating compliment with:', { mood, category: selectedCategory });
       await handleGetCompliment();
     }
   };
@@ -40,12 +39,12 @@ export const MoodSelector: React.FC = () => {
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="w-full max-w-xl mx-auto mb-8"
+      className="w-full max-w-xl mx-auto px-4 sm:px-0 mb-6 sm:mb-8"
     >
-      <h2 className="text-xl font-semibold text-gray-800 mb-4 text-center">
+      <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-4 text-center">
         How are you feeling?
       </h2>
-      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-3">
+      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 sm:gap-3">
         {moods.map(({ id, icon: Icon, label }) => (
           <motion.button
             key={id}
@@ -53,7 +52,7 @@ export const MoodSelector: React.FC = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className={`
-              flex flex-col items-center justify-center p-3 rounded-xl
+              flex flex-col items-center justify-center p-2 sm:p-3 rounded-xl
               transition-all duration-200
               ${selectedMood === id 
                 ? 'bg-purple-100 text-purple-600 ring-2 ring-purple-200 ring-offset-2 shadow-sm' 
@@ -61,8 +60,10 @@ export const MoodSelector: React.FC = () => {
               }
             `}
           >
-            <Icon className="w-6 h-6 mb-2" />
-            <span className="text-sm font-medium">{label}</span>
+            <Icon className="w-5 h-5 sm:w-6 sm:h-6 mb-1 sm:mb-2" />
+            <span className="text-xs sm:text-sm font-medium line-clamp-1">
+              {label}
+            </span>
           </motion.button>
         ))}
       </div>

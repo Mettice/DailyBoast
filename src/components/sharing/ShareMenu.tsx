@@ -6,10 +6,12 @@ import {
 } from 'lucide-react';
 import { SharingService } from '../../services/sharingServices';
 import type { Compliment } from '../../types';
+import type { Tip } from '../../types/tips';
 
 interface ShareMenuProps {
-  compliment: Compliment;
+  compliment: Compliment | Tip;
   onShare?: () => void;
+  renderContent?: () => React.ReactElement;
 }
 
 interface ShareOption {
@@ -72,14 +74,14 @@ const shareOptions: ShareOption[] = [
   },
 ];
 
-export const ShareMenu: React.FC<ShareMenuProps> = ({ compliment, onShare }) => {
+export const ShareMenu: React.FC<ShareMenuProps> = ({ compliment, onShare, renderContent }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
   const handleShare = async (option: ShareOption) => {
     const success = await SharingService.share({
       platform: option.platform,
-      compliment
+      compliment: compliment as (Compliment | Tip)
     });
 
     if (success) {

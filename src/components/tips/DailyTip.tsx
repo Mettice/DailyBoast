@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RefreshCw, Share2, Heart } from 'lucide-react';
+import { RefreshCw, Heart } from 'lucide-react';
 import { useTipsStore } from '../../store/useTipsStore';
 import { useComplimentStore } from '../../store/useComplimentStore';
 import type { TipCategory } from '../../types/tips';
 import { Tooltip } from '../ui/Tooltip';
+import { ShareMenu } from '../sharing/ShareMenu';
+import { ShareImage } from '../sharing/ShareImage';
+import { useTheme } from '../../hooks/useTheme';
+import { useProgress } from '../../hooks/useProgress';
 
-const categoryColors: Record<TipCategory, string> = {
+export const categoryColors: Record<TipCategory, string> = {
   mindfulness: 'bg-blue-100 text-blue-800',
   exercise: 'bg-green-100 text-green-800',
   social: 'bg-purple-100 text-purple-800',
@@ -29,12 +33,20 @@ export const DailyTip: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { currentTip, fetchNewTip, saveTip } = useTipsStore();
   const { selectedMood } = useComplimentStore();
+  const { currentTheme } = useTheme();
+  const { stats, updateProgress } = useProgress();
 
   React.useEffect(() => {
     if (!currentTip) {
       fetchNewTip('mindfulness', selectedMood || undefined);
     }
-  }, [selectedMood]);
+  }, []);
+
+  React.useEffect(() => {
+    if (currentTip) {
+      updateProgress('view', currentTip);
+    }
+  }, [currentTip]);
 
   const handleRefresh = async () => {
     setIsLoading(true);
@@ -45,22 +57,14 @@ export const DailyTip: React.FC = () => {
     }
   };
 
-  const handleShare = async () => {
-    if (currentTip && navigator.share) {
-      try {
-        await navigator.share({
-          title: 'Daily Tip',
-          text: currentTip.text
-        });
-      } catch (error) {
-        console.error('Error sharing:', error);
-      }
-    }
-  };
 
-  // Example: Ensure category is set based on user selection
-  const handleCategoryChange = (newCategory: TipCategory) => {
-    fetchNewTip(newCategory, selectedMood || undefined);
+  const handleCategoryChange = async (newCategory: TipCategory) => {
+    setIsLoading(true);
+    try {
+      await fetchNewTip(newCategory, selectedMood || undefined);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -70,7 +74,7 @@ export const DailyTip: React.FC = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
-        className="bg-white/90 backdrop-blur-sm rounded-2xl p-8 shadow-md mt-6 max-w-xl mx-auto"
+        className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 sm:p-8 shadow-md mt-4 sm:mt-6 mx-4 sm:mx-auto max-w-xl"
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
@@ -83,13 +87,13 @@ export const DailyTip: React.FC = () => {
         </div>
 
         {/* Categories */}
-        <div className="flex flex-wrap gap-2 mb-8">
+        <div className="flex flex-wrap gap-2 mb-4 sm:mb-8">
           {Object.keys(categoryColors).map((category) => (
             <button
               key={category}
               onClick={() => handleCategoryChange(category as TipCategory)}
               className={`
-                px-4 py-2 rounded-full text-sm font-medium
+                px-2 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium
                 transition-all duration-200 hover:shadow-sm
                 ${categoryColors[category as TipCategory]}
                 ${currentTip?.category === category ? 'ring-2 ring-offset-2' : 'hover:opacity-90'}
@@ -101,33 +105,96 @@ export const DailyTip: React.FC = () => {
         </div>
 
         {/* Tip Content */}
-        {currentTip ? (
-          <motion.p layout className="text-lg text-gray-700 text-center my-8 leading-relaxed">
-            {isLoading ? "Loading..." : currentTip.text}
-          </motion.p>
-        ) : (
-          <motion.p className="text-center text-gray-500 my-8">
-            Select a category to get your personalized tip
-          </motion.p>
-        )}
+        <motion.p 
+          layout
+          className="text-base sm:text-lg text-gray-700 text-center my-4 sm:my-8 leading-relaxed px-2 sm:px-4"
+        >
+          {isLoading ? "Loading..." : currentTip?.text || "No tip available"}
+        </motion.p>
+
+        {/* Add this after your main tip content */}
+        <motion.div 
+          className="mt-4 text-sm text-gray-600 space-y-2"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="grid grid-cols-2 gap-4">
+            {/* Activity */}
+            <motion.div 
+              className="bg-blue-50 p-3 rounded-lg"
+              whileHover={{ scale: 1.02 }}
+            >
+              <p className="font-medium">📚 Activity</p>
+              <p className="text-lg">{stats.totalTipsViewed} viewed</p>
+              <p className="text-xs text-blue-600">{stats.totalTipsSaved} saved</p>
+            </motion.div>
+
+            {/* Categories */}
+            <motion.div 
+              className="bg-green-50 p-3 rounded-lg"
+              whileHover={{ scale: 1.02 }}
+            >
+              <p className="font-medium">🎯 Categories</p>
+              <p className="text-lg">{stats.categoriesExplored.length} explored</p>
+              {stats.favoriteCategory && (
+                <p className="text-xs text-green-600">
+                  Favorite: {stats.favoriteCategory.name}
+                </p>
+              )}
+            </motion.div>
+
+            {/* Sharing */}
+            <motion.div 
+              className="bg-pink-50 p-3 rounded-lg"
+              whileHover={{ scale: 1.02 }}
+            >
+              <p className="font-medium">💝 Sharing</p>
+              <p className="text-lg">{stats.tipsShared} shared</p>
+              <p className="text-xs text-pink-600">Keep spreading joy!</p>
+            </motion.div>
+          </div>
+        </motion.div>
 
         {/* Action Buttons */}
-        <motion.div layout className="flex justify-center gap-6 mt-8">
+        <motion.div 
+          layout
+          className="flex justify-center gap-3 sm:gap-6 mt-4 sm:mt-8"
+        >
           <Tooltip content="Get new tip">
-            <motion.button onClick={handleRefresh}>
-              <RefreshCw className="w-6 h-6" />
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handleRefresh}
+              disabled={isLoading}
+              className="p-2 sm:p-3 rounded-full bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors disabled:opacity-50"
+            >
+              <RefreshCw className="w-5 h-5 sm:w-6 sm:h-6" />
             </motion.button>
           </Tooltip>
+
           <Tooltip content="Save tip">
-            <motion.button onClick={() => currentTip && saveTip(currentTip)}>
-              <Heart className="w-6 h-6" />
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => currentTip && saveTip(currentTip)}
+              className="p-2 sm:p-3 rounded-full bg-pink-50 text-pink-600 hover:bg-pink-100 transition-colors"
+            >
+              <Heart className="w-5 h-5 sm:w-6 sm:h-6" />
             </motion.button>
           </Tooltip>
-          <Tooltip content="Share tip">
-            <motion.button onClick={handleShare}>
-              <Share2 className="w-6 h-6" />
-            </motion.button>
-          </Tooltip>
+
+          {currentTip && (
+            <ShareMenu 
+              compliment={currentTip}
+              onShare={() => updateProgress('share', currentTip)}
+              renderContent={() => (
+                <ShareImage 
+                  compliment={currentTip} 
+                  theme={currentTheme}
+                />
+              )}
+            />
+          )}
         </motion.div>
       </motion.div>
     </AnimatePresence>

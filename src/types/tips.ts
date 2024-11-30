@@ -1,3 +1,5 @@
+import type { MoodType } from './index';
+
 export type TipCategory = 
   | 'health'
   | 'mindfulness'
@@ -18,10 +20,12 @@ export type TipCategory =
 
 export interface Tip {
   id: string;
-  category: TipCategory;
   text: string;
-  tags?: string[];
-  source?: string;
+  category: TipCategory;
+  createdAt: string;
+  updatedAt: string;
+  mood?: MoodType;
+  tags: string[];
 }
 
 export interface DailyTipState {

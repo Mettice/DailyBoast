@@ -9,6 +9,7 @@ interface TipsStore {
   savedTips: Tip[];
   fetchNewTip: (category?: TipCategory, mood?: MoodType) => Promise<void>;
   saveTip: (tip: Tip) => void;
+  removeSavedTip: (tipId: string) => void;
 }
 
 export const useTipsStore = create<TipsStore>((set) => ({
@@ -35,6 +36,12 @@ export const useTipsStore = create<TipsStore>((set) => ({
   saveTip: (tip) => {
     set((state) => ({
       savedTips: [...state.savedTips, tip]
+    }));
+  },
+
+  removeSavedTip: (tipId) => {
+    set((state) => ({
+      savedTips: state.savedTips.filter(tip => tip.id !== tipId)
     }));
   }
 }));

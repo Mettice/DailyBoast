@@ -7,11 +7,11 @@ export const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <ErrorBoundary />
+    errorElement: <ErrorBoundary><p>Something went wrong</p></ErrorBoundary>
   },
   {
     path: '/callback',
     element: <CallbackPage />,
-    errorElement: <ErrorBoundary />
+    errorElement: <ErrorBoundary><p>Something went wrong</p></ErrorBoundary>
   }
 ]); 
