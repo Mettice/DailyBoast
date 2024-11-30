@@ -1,0 +1,23 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "dist/**",
+        "use": "@vercel/static"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/dist/$1"
+      },
+      {
+        "src": "/[^.]+",
+        "dest": "/dist/index.html"
+      }
+    ],
+    "env": {
+      "VITE_API_URL": "@vite_api_url",
+      "VITE_KINDE_AUTH_DOMAIN": "@vite_kinde_auth_domain"
+    }
+  }

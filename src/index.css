@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Then your custom components layer */
+@layer components {
+  .card {
+    @apply bg-white rounded-3xl p-8 shadow-sm;
+  }
+  
+  .button-primary {
+    @apply px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors;
+  }
+  
+  .button-icon {
+    @apply p-2 rounded-full hover:bg-purple-50 transition-colors;
+  }
+}
+
+/* Any other custom CSS can go here */
+
+@layer base {
+  body {
+    @apply bg-gray-50;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+
+  /* Container widths */
+  .container {
+    @apply px-4;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  
+  /* Hide scrollbars but keep functionality */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
