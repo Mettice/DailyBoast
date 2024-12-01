@@ -4,17 +4,18 @@ import { LogIn, LogOut, User } from 'lucide-react';
 import { useAuth } from '../providers/AuthProvider';
 
 export const AuthButton: React.FC = () => {
-  const { isAuthenticated, user, login, logout, loading } = useAuth();
+  const { login, logout, isAuthenticated, user } = useAuth();
 
-  if (loading) {
-    return (
-      <motion.div
-        animate={{ opacity: [0.5, 1, 0.5] }}
-        transition={{ repeat: Infinity, duration: 1.5 }}
-        className="w-24 h-8 bg-gray-200 rounded-lg"
-      />
-    );
-  }
+  const handleLogin = () => {
+    console.log('Login clicked');
+    try {
+      login();
+    } catch (error) {
+      console.error('Login error:', error);
+    }
+  };
+
+  console.log('Auth state:', { isAuthenticated, user });
 
   if (isAuthenticated && user) {
     return (
@@ -46,7 +47,7 @@ export const AuthButton: React.FC = () => {
     <motion.button
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
-      onClick={() => login()}
+      onClick={handleLogin}
       className="flex items-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
     >
       <LogIn className="w-4 h-4" />

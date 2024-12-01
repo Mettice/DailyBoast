@@ -1,5 +1,4 @@
 import { Sun, Moon, Star, Coffee, Target, Smile, Frown, AlertCircle, XCircle, Cloud, Users, HelpCircle, Heart } from 'lucide-react';
-import { useComplimentStore } from "../../store/useComplimentStore";
 import { useAnalytics } from "../../components/analytics/AnalyticsProvider";
 import type { MoodType } from '../../types';
 

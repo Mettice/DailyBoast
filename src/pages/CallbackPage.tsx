@@ -3,19 +3,14 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 export const CallbackPage = () => {
-  const { handleLoginCallback } = useKindeAuth();
+  const { isAuthenticated, isLoading } = useKindeAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
-    handleLoginCallback()
-      .then(() => {
-        navigate('/');
-      })
-      .catch((error) => {
-        console.error('Auth callback error:', error);
-        navigate('/');
-      });
-  }, [handleLoginCallback, navigate]);
+    if (!isLoading && isAuthenticated) {
+      navigate('/');
+    }
+  }, [isLoading, isAuthenticated, navigate]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">

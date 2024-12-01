@@ -10,6 +10,7 @@ interface ComplimentCardProps {
   compliment: Compliment;
   onRefresh: () => void;
   onSave: () => void;
+  onShare: () => void;
 }
 
 const animationConfig = {
@@ -23,6 +24,7 @@ export const ComplimentCard: React.FC<ComplimentCardProps> = ({
   compliment,
   onRefresh,
   onSave,
+
 }) => {
   const { updateProgress } = useProgress();
   const [shareToast, setShareToast] = React.useState<{

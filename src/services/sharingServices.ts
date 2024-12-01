@@ -1,10 +1,11 @@
 import type { Compliment } from '../types';
 import type { Tip } from '../types/tips';
+import html2canvas from 'html2canvas';
 
 interface ShareOptions {
   platform: 'twitter' | 'facebook' | 'linkedin' | 'whatsapp' | 'telegram' | 'email' | 'copy' | 'download';
   compliment: Compliment | Tip;
-  imageUrl?: string;
+  renderContent?: () => React.ReactNode;
 }
 
 export class SharingService {
@@ -25,11 +26,30 @@ export class SharingService {
     };
   }
 
-  static async share({ platform, compliment, imageUrl }: ShareOptions): Promise<boolean> {
+  static async share({ platform, compliment, renderContent }: ShareOptions): Promise<boolean> {
     const shareText = `${compliment.text} ✨ \n\nShared via Daily Joy`;
     
     try {
-      // Try native share if available
+      if (platform === 'download' && renderContent) {
+        const element = renderContent();
+        // Convert React element to image and download
+        const node = document.createElement('div');
+        node.appendChild(element as unknown as Node);
+        
+        try {
+          const dataUrl = await html2canvas(node);
+          const link = document.createElement('a');
+          link.download = 'dailyboast-compliment.png';
+          link.href = dataUrl.toDataURL();
+          link.click();
+          return true;
+        } catch (error) {
+          console.error('Error downloading image:', error);
+          return false;
+        }
+      }
+
+      // Rest of sharing logic
       if (navigator.share && platform !== 'copy') {
         try {
           await navigator.share({
@@ -57,7 +77,7 @@ export class SharingService {
         }
         
         default: {
-          const shareUrl = this.getShareUrls(shareText, imageUrl)[platform];
+          const shareUrl = this.getShareUrls(shareText)[platform];
           const windowFeatures = 'width=600,height=400,menubar=no,toolbar=no,status=no';
           window.open(shareUrl, 'share', windowFeatures);
           return true;

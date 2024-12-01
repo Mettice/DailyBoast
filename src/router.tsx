@@ -1,17 +1,41 @@
 import { createBrowserRouter } from 'react-router-dom';
-import App from './App';
+import { MainLayout } from './components/Layout/MainLayout';
+import { LandingPage } from './pages/LandingPage';
+import { Home } from './pages/Home';
 import { CallbackPage } from './pages/CallbackPage';
-import { ErrorBoundary } from './components/ErrorBoundary';
+import { Achievements } from './pages/Achievements';
+import { Streaks } from './pages/Streaks';
+import { History } from './pages/History';
 
 export const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
-    errorElement: <ErrorBoundary><p>Something went wrong</p></ErrorBoundary>
+    element: <LandingPage />
+  },
+  {
+    path: '/dashboard',
+    element: <MainLayout />,
+    children: [
+      {
+        index: true,
+        element: <Home />
+      },
+      {
+        path: 'achievements',
+        element: <Achievements />
+      },
+      {
+        path: 'streaks',
+        element: <Streaks />
+      },
+      {
+        path: 'history',
+        element: <History />
+      }
+    ]
   },
   {
     path: '/callback',
-    element: <CallbackPage />,
-    errorElement: <ErrorBoundary><p>Something went wrong</p></ErrorBoundary>
+    element: <CallbackPage />
   }
 ]); 

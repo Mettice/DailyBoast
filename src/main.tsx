@@ -1,18 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { KindeProvider } from "@kinde-oss/kinde-auth-react";
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 import { AnalyticsProvider } from './components/analytics/AnalyticsProvider';
-import App from './App';
+import { AuthProvider } from './providers/AuthProvider';
+import { router } from './router';
 import './index.css'
-// import './App.css' // Comment this out temporarily
-
-const router = createBrowserRouter([
-  {
-    path: '*',
-    element: <App />,
-  },
-]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -22,9 +15,11 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       redirectUri={import.meta.env.VITE_KINDE_REDIRECT_URI}
       logoutUri={import.meta.env.VITE_KINDE_LOGOUT_URI}
     >
-      <AnalyticsProvider>
-        <RouterProvider router={router} />
-      </AnalyticsProvider>
+      <AuthProvider>
+        <AnalyticsProvider>
+          <RouterProvider router={router} />
+        </AnalyticsProvider>
+      </AuthProvider>
     </KindeProvider>
   </React.StrictMode>
 );
