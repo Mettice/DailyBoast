@@ -2,18 +2,19 @@ import { TipCategory } from './tips';
 import { MoodType } from './mood';
 
 export type ComplimentCategory = 
-  | 'all'
   | 'personal'
   | 'professional'
-  | 'general'
-  | 'confidence'
-  | 'motivation'
-  | 'friendship'
+  | 'communication'
+  | 'finance'
+  | 'family'
+  | 'love'
+  | 'relationships'
+  | 'health'
   | 'self-care'
-  | 'success'
+  | 'life'
   | 'creativity'
   | 'humor'
-  | 'inspiration';
+  | 'mindfulness';
 
 export type CategoryFilter = ComplimentCategory;
 

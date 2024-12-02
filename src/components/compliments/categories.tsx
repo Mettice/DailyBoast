@@ -1,5 +1,5 @@
 import React from 'react';
-import { Globe2, Star, Brain, Target, Users, Heart, Trophy, Sparkles, CircleDot } from 'lucide-react';
+import { Globe2, Star, Brain, Target, Users, Heart, Trophy, Sparkles, CircleDot, PiggyBank, MessageCircle } from 'lucide-react';
 import type { CategoryFilter, ComplimentCategory } from '../../types';
 import { motion } from 'framer-motion';
 import { categoryThemes } from '../../config/categoryThemes';
@@ -11,17 +11,20 @@ interface CategoryProps {
 
 export const Categories: React.FC<CategoryProps> = ({ selected, onSelect }) => {
   const categories = [
-    { id: 'all', label: 'All', icon: Globe2 },
-    { id: 'personal', label: 'Personal', icon: Star },
-    { id: 'professional', label: 'Professional', icon: Brain },
-    { id: 'general', label: 'General', icon: Star },
-    { id: 'confidence', label: 'Confidence', icon: Brain },
-    { id: 'motivation', label: 'Motivation', icon: Target },
-    { id: 'friendship', label: 'Friendship', icon: Users },
+    { id: 'personal', label: 'Personal Growth', icon: Star },
+    { id: 'professional', label: 'Professional Life', icon: Brain },
+    { id: 'communication', label: 'Communication', icon: MessageCircle },
+    { id: 'financial', label: 'Financial Wellness', icon: PiggyBank },
+    { id: 'family', label: 'Family', icon: Users },
+    { id: 'love', label: 'Love', icon: Heart },
+    { id: 'relationships', label: 'Relationships', icon: Target },
+    { id: 'health', label: 'Health & Wellness', icon: Brain },
     { id: 'self-care', label: 'Self-care', icon: Heart },
-    { id: 'success', label: 'Success', icon: Trophy },
+    { id: 'life', label: 'Life Challenges', icon: Trophy },
     { id: 'creativity', label: 'Creativity', icon: Sparkles },
-    { id: 'humor', label: 'Humor', icon: CircleDot }
+    { id: 'humor', label: 'Humor & Positivity', icon: CircleDot },
+    { id: 'mindfulness', label: 'Mindfulness & Spirituality', icon: Brain },
+    
   ] as const;
 
   return (
@@ -32,7 +35,7 @@ export const Categories: React.FC<CategoryProps> = ({ selected, onSelect }) => {
         animate={{ opacity: 1, y: 0 }}
       >
         {categories.map(({ id, label, icon: Icon }) => {
-          const theme = categoryThemes[id as ComplimentCategory];
+          const theme = categoryThemes[id as keyof typeof categoryThemes];
           return (
             <motion.button
               key={id}
@@ -40,7 +43,7 @@ export const Categories: React.FC<CategoryProps> = ({ selected, onSelect }) => {
               onClick={() => onSelect(id as CategoryFilter)}
               className={`relative flex items-center gap-1.5 px-3 py-1.5 rounded-full transition-all text-xs
                 ${selected === id 
-                  ? `${theme?.background || 'bg-purple-100'} ${theme?.primary || 'text-purple-700'}` 
+                  ? `${theme?.background || 'bg-purple-100'} ${theme?.icon || 'text-purple-700'}` 
                   : 'hover:bg-gray-100/50 text-gray-600'}`}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

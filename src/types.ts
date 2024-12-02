@@ -20,8 +20,20 @@ export type MoodType =
   | 'disheartened'
   | 'frustrated';
 
-export type ComplimentCategory = 'all' | 'personal' | 'professional' | 'general' | 'confidence' | 
-  'motivation' | 'friendship' | 'self-care' | 'success' | 'creativity' | 'humor';
+export type ComplimentCategory = 
+  | 'personal'
+  | 'professional'
+  | 'communication'
+  | 'financial'
+  | 'family'
+  | 'love'
+  | 'relationships'
+  | 'health'
+  | 'self-care'
+  | 'life'
+  | 'creativity'
+  | 'humor'
+  | 'mindfulness';
 
 export interface Compliment {
   id: string;

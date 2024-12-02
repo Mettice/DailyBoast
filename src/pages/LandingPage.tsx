@@ -1,11 +1,22 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { useAuth } from '../providers/AuthProvider';
 import { Heart, Sparkles, TrendingUp, ArrowRight, Star, Users, Shield, Plus, Minus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const LandingPage = () => {
   const [openFaq, setOpenFaq] = React.useState<number | null>(null);
   const { login } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignIn = async () => {
+    try {
+      await login();
+      navigate('/');
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
 
   const faqs = [
     {
@@ -26,6 +37,8 @@ export const LandingPage = () => {
     }
   ];
 
+
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,12 +46,16 @@ export const LandingPage = () => {
         <header className="flex justify-between items-center py-6">
           <h1 className="text-2xl font-bold text-purple-700">DailyBoast</h1>
           <button
-            onClick={login}
+            onClick={handleSignIn}
             className="px-6 py-2 bg-purple-600 text-white rounded-full font-medium hover:bg-purple-700 transition-colors"
           >
             Sign in
           </button>
         </header>
+
+        {/* Add this after the header */}
+        <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-purple-100/50 to-transparent rounded-full blur-3xl" />
+        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-purple-100/30 to-transparent rounded-full blur-3xl" />
 
         {/* Hero Section */}
         <main className="py-24">
@@ -65,10 +82,11 @@ export const LandingPage = () => {
             {/* Primary CTA */}
             <motion.div className="flex gap-6 justify-center items-center">
               <button
-                onClick={login}
-                className="px-8 py-3 bg-purple-600 text-white rounded-full text-lg font-medium hover:bg-purple-700 transition-all flex items-center gap-2"
+                onClick={handleSignIn}
+                className="px-8 py-3 bg-purple-600 text-white rounded-full text-lg font-medium hover:bg-purple-700 transition-all flex items-center gap-2 group"
               >
-                Get Started <ArrowRight className="w-5 h-5" />
+                Get Started 
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </button>
               <button
                 onClick={() => {/* Add demo/tour functionality */}}
@@ -79,7 +97,7 @@ export const LandingPage = () => {
             </motion.div>
 
             {/* How it Works */}
-            <section className="py-32">
+            <section className="py-32 relative">
               <h3 className="text-3xl font-bold text-purple-900 mb-20">How It Works</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
                 {[
@@ -98,15 +116,22 @@ export const LandingPage = () => {
                     title: "Track Progress",
                     description: "Visualize your growth and celebrate your wellbeing journey"
                   }
-                ].map((feature, index) => (
+                ].map((feature) => (
                   <motion.div
                     key={feature.title}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.2 }}
-                    className="text-center"
+                    whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                    whileTap={{ scale: 0.95 }}
+                    className="text-center cursor-pointer"
                   >
-                    <feature.icon className="w-12 h-12 text-purple-600 mx-auto mb-6" />
+                    <motion.div
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="mb-6"
+                    >
+                      <feature.icon className="w-12 h-12 text-purple-600 mx-auto" />
+                    </motion.div>
                     <h4 className="text-xl font-semibold text-purple-900 mb-4">{feature.title}</h4>
                     <p className="text-purple-600 leading-relaxed">{feature.description}</p>
                   </motion.div>
@@ -134,14 +159,16 @@ export const LandingPage = () => {
                     author: "Emma L.",
                     role: "Active User"
                   }
-                ].map((testimonial, index) => (
+                ].map((testimonial) => (
                   <motion.div
                     key={testimonial.author}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.2 }}
-                    className="text-center px-4"
+                    whileHover={{ scale: 1.02 }}
+                    transition={{ duration: 0.2 }}
+                    className="text-center px-4 relative group"
                   >
+                    <div className="absolute inset-0 bg-gradient-to-t from-purple-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
                     <div className="flex gap-1 justify-center mb-6">
                       {[...Array(5)].map((_, i) => (
                         <Star key={i} className="w-6 h-6 text-yellow-400 fill-current" />
@@ -203,7 +230,7 @@ export const LandingPage = () => {
                   Join thousands of users who are already improving their wellbeing with DailyBoast
                 </p>
                 <button
-                  onClick={login}
+                  onClick={handleSignIn}
                   className="px-8 py-4 bg-white text-purple-700 rounded-full text-lg font-medium hover:bg-purple-50 transition-all"
                 >
                   Get Started Now

@@ -1,5 +1,5 @@
 export type ComplimentCategory = 
-'general' | 'confidence' | 'motivation' | 'friendship' | 'self-care' | 'success' | 'creativity' | 'professional' | 'personal';
+'general' | 'confidence' | 'motivation' | 'friendship' | 'self-care' | 'success' | 'creativity' | 'professional' | 'personal' | 'humor' | 'family';
 
 export interface Compliment {
   id: string;

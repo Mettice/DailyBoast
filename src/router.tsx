@@ -38,4 +38,9 @@ export const router = createBrowserRouter([
     path: '/callback',
     element: <CallbackPage />
   }
-]); 
+], {
+  future: {
+    v7_partialHydration: true,
+    v7_skipActionErrorRevalidation: true
+  }
+}); 
