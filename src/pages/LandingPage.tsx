@@ -2,21 +2,13 @@ import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { useAuth } from '../providers/AuthProvider';
 import { Heart, Sparkles, TrendingUp, ArrowRight, Star, Users, Shield, Plus, Minus } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
 
 export const LandingPage = () => {
   const [openFaq, setOpenFaq] = React.useState<number | null>(null);
   const { login } = useAuth();
-  const navigate = useNavigate();
+  console.log('Auth hook loaded:', { login });
 
-  const handleSignIn = async () => {
-    try {
-      await login();
-      navigate('/');
-    } catch (error) {
-      console.error('Login failed:', error);
-    }
-  };
+ 
 
   const faqs = [
     {
@@ -44,10 +36,10 @@ export const LandingPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <header className="flex justify-between items-center py-6">
-          <h1 className="text-2xl font-bold text-purple-700">DailyBoast</h1>
+          <h1 className="text-2xl font-bold text-purple-700">BoostAI</h1>
           <button
-            onClick={handleSignIn}
-            className="px-6 py-2 bg-purple-600 text-white rounded-full font-medium hover:bg-purple-700 transition-colors"
+            onClick={login}
+            className="px-8 py-3 bg-purple-600 text-white rounded-full text-lg font-medium hover:bg-purple-700 transition-all flex items-center gap-2 group"
           >
             Sign in
           </button>
@@ -69,7 +61,7 @@ export const LandingPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              Welcome to DailyBoast
+              Welcome to BoostAI
             </motion.h2>
             <motion.p 
               className="text-xl text-purple-700 max-w-2xl mx-auto mb-16"
@@ -82,7 +74,7 @@ export const LandingPage = () => {
             {/* Primary CTA */}
             <motion.div className="flex gap-6 justify-center items-center">
               <button
-                onClick={handleSignIn}
+                onClick={login}
                 className="px-8 py-3 bg-purple-600 text-white rounded-full text-lg font-medium hover:bg-purple-700 transition-all flex items-center gap-2 group"
               >
                 Get Started 
@@ -145,7 +137,7 @@ export const LandingPage = () => {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                 {[
                   {
-                    quote: "DailyBoast has transformed how I understand my emotions. Highly recommended!",
+                    quote: "BoostAI has transformed how I understand my emotions. Highly recommended!",
                     author: "Sarah K.",
                     role: "Daily User"
                   },
@@ -227,10 +219,10 @@ export const LandingPage = () => {
               <div className="bg-purple-700 text-white rounded-3xl p-16 text-center">
                 <h3 className="text-3xl font-bold mb-4">Ready to Start Your Journey?</h3>
                 <p className="text-purple-100 mb-8 max-w-2xl mx-auto">
-                  Join thousands of users who are already improving their wellbeing with DailyBoast
+                  Join thousands of users who are already improving their wellbeing with BoostAI
                 </p>
                 <button
-                  onClick={handleSignIn}
+                  onClick={login}
                   className="px-8 py-4 bg-white text-purple-700 rounded-full text-lg font-medium hover:bg-purple-50 transition-all"
                 >
                   Get Started Now
@@ -244,7 +236,7 @@ export const LandingPage = () => {
         <footer className="py-16 border-t border-purple-100">
           <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 px-4">
             <div className="space-y-4">
-              <h4 className="text-xl font-bold text-purple-900">DailyBoast</h4>
+              <h4 className="text-xl font-bold text-purple-900">BoostAI</h4>
               <p className="text-purple-600">Empowering your emotional wellbeing journey</p>
               <div className="flex gap-4">
                 <a href="#" className="text-purple-600 hover:text-purple-700">
@@ -289,7 +281,7 @@ export const LandingPage = () => {
           </div>
 
           <div className="mt-12 text-center text-purple-600">
-            <p>© 2024 DailyBoast. All rights reserved.</p>
+            <p>© 2024 BoostAI. All rights reserved.</p>
           </div>
         </footer>
       </div>

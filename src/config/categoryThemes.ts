@@ -18,7 +18,7 @@ export const categoryThemes: Record<ComplimentCategory, CategoryTheme> = {
     background: '#ec4899',
     icon: 'text-pink-600'
   },
-  finance: {
+  financial: {
     background: '#10b981',
     icon: 'text-emerald-600'
   },

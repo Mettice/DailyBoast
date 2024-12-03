@@ -1,4 +1,5 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { Navigate, createBrowserRouter } from 'react-router-dom';
+import { useAuth } from './providers/AuthProvider';
 import { MainLayout } from './components/Layout/MainLayout';
 import { LandingPage } from './pages/LandingPage';
 import { Home } from './pages/Home';
@@ -7,6 +8,17 @@ import { Achievements } from './pages/Achievements';
 import { Streaks } from './pages/Streaks';
 import { History } from './pages/History';
 
+// Protected Route wrapper component
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const { isAuthenticated } = useAuth();
+  
+  if (!isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+};
+
 export const router = createBrowserRouter([
   {
     path: '/',
@@ -14,7 +26,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <MainLayout />,
+    element: (
+      <ProtectedRoute>
+        <MainLayout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

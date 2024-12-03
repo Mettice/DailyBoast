@@ -1,10 +1,12 @@
 import { createContext, useContext, useEffect } from 'react';
 import { KindeProvider, useKindeAuth } from "@kinde-oss/kinde-auth-react";
+import { router } from '../router';
 
 interface AuthContextType {
   login: () => void;
   logout: () => void;
   isAuthenticated: boolean;
+  user: any;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -16,10 +18,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       domain={`https://${import.meta.env.VITE_KINDE_DOMAIN.replace('https://', '')}`}
       redirectUri={import.meta.env.VITE_KINDE_REDIRECT_URI}
       logoutUri={import.meta.env.VITE_KINDE_LOGOUT_REDIRECT_URI}
-      onRedirectCallback={(user: any) => {
-        console.log('Auth successful:', user);
-        window.location.href = '/dashboard';
-      }}
     >
       <AuthContextProvider>{children}</AuthContextProvider>
     </KindeProvider>
@@ -27,10 +25,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 };
 
 function AuthContextProvider({ children }: { children: React.ReactNode }) {
-  const { login, logout, isAuthenticated } = useKindeAuth();
+  const { login, logout, isAuthenticated, user } = useKindeAuth();
   
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.navigate('/dashboard');
+    }
+  }, [isAuthenticated]);
+
   return (
-    <AuthContext.Provider value={{ login, logout, isAuthenticated }}>
+    <AuthContext.Provider value={{ login, logout, isAuthenticated, user }}>
       {children}
     </AuthContext.Provider>
   );
