@@ -11,6 +11,7 @@ import { Tooltip } from '../components/ui/Tooltip';
 import { ShareMenu } from '../components/sharing/ShareMenu';
 import { ShareImage } from '../components/sharing/ShareImage';
 import { useTheme } from '../hooks/useTheme';
+import { Profile } from '../components/profile/Profile';
 
 export const Home = () => {
   const { 
@@ -35,6 +36,13 @@ export const Home = () => {
       animate={{ opacity: 1, y: 0 }}
       className="min-h-[calc(100vh-4rem)] p-8 max-w-6xl mx-auto"
     >
+      <div id="profile-section" className="mb-12">
+        <h2 className="text-xl font-semibold mb-6">Your Profile</h2>
+        <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-sm p-6">
+          <Profile />
+        </div>
+      </div>
+
       <div className="mb-12">
         <h2 className="text-xl font-semibold mb-6">Categories</h2>
         <div className="w-full overflow-x-auto">

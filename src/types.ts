@@ -46,3 +46,26 @@ export interface Compliment {
 } 
 
 export type { TipCategory } from './types/tips';
+
+export interface UserProfile {
+  id: string;
+  username: string;
+  email: string;
+  displayName?: string;
+  profilePicture?: string;
+  bio?: string;
+  joinDate: string;
+  timezone?: string;
+  preferences: {
+    theme: 'light' | 'dark' | 'system';
+    notifications: boolean;
+    // ... existing preferences
+  };
+  stats: {
+    totalComplimentsViewed: number;
+    totalShares: number;
+    longestStreak: number;
+    favoriteCategory: ComplimentCategory;
+    categoryViews: Record<ComplimentCategory, number>;
+  };
+}

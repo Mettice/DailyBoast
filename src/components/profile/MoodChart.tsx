@@ -11,7 +11,8 @@ import {
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
 import { useMoodStore } from '../../store/useMoodStore';
-import { MoodType } from '@/types';
+import { MoodType } from '../../types/mood';
+
 
 ChartJS.register(
   CategoryScale,
@@ -22,6 +23,16 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+interface MoodChartProps {
+  entries: Array<{ date: string; mood: MoodType }>;
+  analytics: {
+    mostFrequentMood: string;
+    streakCount: number;
+    weeklyAverage: number;
+    improvementTrends: number;
+  };
+}
 
 const getMoodValue = (mood: MoodType): number => {
   const moodValues: Record<MoodType, number> = {
@@ -41,7 +52,10 @@ const getMoodValue = (mood: MoodType): number => {
     bored: 4,
     confused: 4,
     disheartened: 2,
-    neutral: 5
+    neutral: 5,
+    grateful: 8,
+    excited: 9,
+    content: 7
   };
   return moodValues[mood];
 };
@@ -60,22 +74,29 @@ const getImprovementTrend = (trend: number): string => {
   return '→ Stable';
 };
 
-export const MoodChart: React.FC = () => {
-  const entries = useMoodStore(state => state.entries);
-  const analytics = useMoodStore(state => state.analytics);
+export const MoodChart: React.FC<MoodChartProps> = ({ entries, analytics }) => {
   const weeklyMoods = useMoodStore(state => state.getWeeklyMoods());
 
   const data = {
     labels: entries.map(entry => 
       new Date(entry.date).toLocaleDateString()
     ),
-    datasets: [{
-      label: 'Mood Over Time',
-      data: entries.map(entry => getMoodValue(entry.mood)),
-      fill: false,
-      borderColor: 'rgb(147, 51, 234)',
-      tension: 0.1
-    }]
+    datasets: [
+      {
+        label: 'Overall Mood',
+        data: entries.map(entry => getMoodValue(entry.mood)),
+        fill: false,
+        borderColor: 'rgb(147, 51, 234)',
+        tension: 0.1
+      },
+      {
+        label: 'Weekly Mood',
+        data: weeklyMoods.map(entry => getMoodValue(entry.mood)),
+        fill: false,
+        borderColor: 'rgb(52, 211, 153)',
+        tension: 0.1
+      }
+    ]
   };
 
   const options = {
