@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useAuth } from '../providers/AuthProvider';
-import { Heart, Sparkles, TrendingUp, ArrowRight, Star, Users, Shield, Plus, Minus, MessageCircle } from 'lucide-react';
+import { Heart, Sparkles, TrendingUp, ArrowRight, Star, Users, Plus, Minus, MessageCircle } from 'lucide-react';
 import { ChatBot } from '../components/ChatBot';
 
 const fadeInUp = {
@@ -57,7 +57,7 @@ export const LandingPage = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
         {/* Header */}
         <header className="flex justify-between items-center py-6">
           <img 
@@ -74,8 +74,7 @@ export const LandingPage = () => {
         </header>
 
         {/* Add this after the header */}
-        <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-gradient-to-bl from-purple-100/50 to-transparent rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-purple-100/30 to-transparent rounded-full blur-3xl" />
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Hero Section */}
         <main className="py-24">
