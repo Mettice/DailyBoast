@@ -60,7 +60,11 @@ export const LandingPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <header className="flex justify-between items-center py-6">
-          <h1 className="text-2xl font-bold text-purple-700">BoostAI</h1>
+          <img 
+            src="/images/logo1.png" 
+            alt="BoostAI" 
+            className="h-12 w-auto object-contain hover:opacity-90 transition-opacity cursor-pointer" 
+          />
           <button
             onClick={login}
             className="px-8 py-3 bg-purple-600 text-white rounded-full text-lg font-medium hover:bg-purple-700 transition-all flex items-center gap-2 group"
@@ -78,94 +82,55 @@ export const LandingPage = () => {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-center space-y-12 relative"
+            className="relative"
           >
-            {/* Hero Section */}
-            <div className="relative z-10">
-              <motion.h2 
-                className="text-6xl font-bold text-purple-900 mb-8 leading-tight"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-              >
-                Transform Your Day <br />
-                <span className="text-purple-600">in Minutes</span>
-              </motion.h2>
-              <motion.p 
-                className="text-xl text-purple-700 max-w-2xl mx-auto mb-16"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              >
-                Track your mood, get daily boosts, and achieve your goals effortlessly. 
-                Join thousands making positive changes every day.
-              </motion.p>
-
-              {/* Enhanced CTA Buttons */}
-              <motion.div className="flex gap-6 justify-center items-center">
-                <button
-                  onClick={login}
-                  className="px-8 py-4 bg-purple-600 text-white rounded-full text-lg font-medium 
-                           hover:bg-purple-700 transition-all flex items-center gap-2 group
-                           shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+              <div className="text-left space-y-6">
+                <motion.h2 
+                  className="text-5xl font-bold text-purple-900 leading-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
                 >
-                  Get Early Access 
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-                <button
-                  onClick={() => {/* Add waitlist functionality */}}
-                  className="px-8 py-4 border-2 border-purple-600 text-purple-600 
-                           rounded-full text-lg font-medium hover:bg-purple-50 
-                           transition-all flex items-center gap-2"
+                  Transform Your Day <br /> 
+                  <span className="text-purple-600">in Minutes</span>
+                </motion.h2>
+                <motion.p 
+                  className="text-lg text-purple-700"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
                 >
-                  Join Waitlist
-                </button>
-              </motion.div>
-
-              {/* Social Proof */}
-              <motion.div 
-                className="mt-12 flex justify-center items-center gap-8 text-purple-700"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.5 }}
-              >
-                <div className="flex items-center gap-2">
-                  <Users className="w-5 h-5" />
-                  <span>10k+ Users</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 fill-current text-yellow-400" />
-                  <span>4.9/5 Rating</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Shield className="w-5 h-5" />
-                  <span>Privacy First</span>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Visual Enhancement */}
-            <motion.div 
-              className="absolute top-0 right-0 w-1/2 h-full"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="relative w-full h-full">
-                <motion.div
-                  animate={{ 
-                    y: [0, -20, 0],
-                    transition: { duration: 4, repeat: Infinity, ease: "easeInOut" }
-                  }}
-                  className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-full blur-xl"
-                />
-                <motion.div
-                  animate={{ 
-                    y: [0, 20, 0],
-                    transition: { duration: 5, repeat: Infinity, ease: "easeInOut" }
-                  }}
-                  className="absolute bottom-20 right-40 w-48 h-48 bg-gradient-to-tr from-purple-300/30 to-blue-300/30 rounded-full blur-xl"
-                />
+                  Track your mood, get daily boosts, and achieve your goals effortlessly.
+                </motion.p>
+                <motion.div className="flex gap-4">
+                  <button
+                    onClick={login}
+                    className="px-8 py-4 bg-purple-600 text-white rounded-full text-lg font-medium 
+                             hover:bg-purple-700 transition-all flex items-center gap-2 group
+                             shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+                  >
+                    Get Early Access 
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                  <button
+                    onClick={() => {/* Add waitlist functionality */}}
+                    className="px-8 py-4 border-2 border-purple-600 text-purple-600 
+                             rounded-full text-lg font-medium hover:bg-purple-50 
+                             transition-all flex items-center gap-2"
+                  >
+                    Join Waitlist
+                  </button>
+                </motion.div>
               </div>
-            </motion.div>
+              
+              <motion.img 
+                src="/images/hero-image.jpg" 
+                alt="Hero Section" 
+                className="w-full rounded-lg shadow-xl hover:shadow-2xl transition-shadow duration-300"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+              />
+            </div>
           </motion.div>
         </main>
 
